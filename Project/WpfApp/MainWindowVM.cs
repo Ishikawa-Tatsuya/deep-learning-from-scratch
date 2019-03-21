@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Contents;
 using Contents.ch01;
+using Contents.ch02;
 using Contents.MatPlotLib;
 using OxyPlot;
 using VVMConnection;
@@ -54,13 +55,20 @@ namespace WpfApp
 
         void MakeContentsTree()
         {
-            var ch0 = new ContensTreeVM { Name = "Ch0" };
+            var ch0 = new ContensTreeVM { Name = "Ch1" };
             ch0.Nodes.Add(new ContensTreeVM { Name = nameof(Hungry), Execute = Hungry.Execute });
             ch0.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = SimpleGraph.Execute });
             ch0.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = ImageShow.Execute });
             ch0.Nodes.Add(new ContensTreeVM { Name = nameof(Man), Execute = Man.Execute });
             ch0.Nodes.Add(new ContensTreeVM { Name = nameof(SinCosGraph), Execute = SinCosGraph.Execute });
             Contents.Add(ch0);
+            
+            var ch1 = new ContensTreeVM { Name = "Ch2" };
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(AndGate), Execute = AndGate.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(OrGate), Execute = OrGate.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(NAndGate), Execute = NAndGate.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(XOrGate), Execute = XOrGate.Execute });
+            Contents.Add(ch1);
         }
 
         void Std.INeed.Print(string text)

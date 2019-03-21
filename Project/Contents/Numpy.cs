@@ -16,6 +16,10 @@ namespace Contents
             return list.ToArray();
         }
 
+        internal static double sum(double[] vals) => vals.Sum();
+
+        internal static T[] array<T>(params T[] vals) => vals; 
+
         public static double[] cos(double[] src) => src.Select(e => Math.Cos(e)).ToArray();
 
         public static double[] sin(double[] src) => src.Select(e => Math.Sin(e)).ToArray();
