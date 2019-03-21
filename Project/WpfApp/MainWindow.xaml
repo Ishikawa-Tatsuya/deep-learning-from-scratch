@@ -15,7 +15,8 @@
     <c:Connection.Methods>
         <c:MethodCollection>
             <c:Method Name ="GetSelectedContentsItem" Invoker="GetSelectedContentsItem"/>
-            <c:Method Name ="ShowImage" Invoker="ShowImage"/>
+            <c:Method Name ="ShowImageFile" Invoker="ShowImageFile"/>
+            <c:Method Name ="ShowImageBinary" Invoker="ShowImageBinary"/>
         </c:MethodCollection>
     </c:Connection.Methods>
 

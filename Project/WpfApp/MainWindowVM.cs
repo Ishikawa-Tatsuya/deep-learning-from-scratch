@@ -5,13 +5,14 @@ using System.Linq;
 using Contents;
 using Contents.ch01;
 using Contents.ch02;
+using Contents.ch03;
 using Contents.MatPlotLib;
 using OxyPlot;
 using VVMConnection;
 
 namespace WpfApp
 {
-    public class MainWindowVM : Std.INeed, Plot.INeed
+    public class MainWindowVM : Std.INeed, Plot.INeed, Contents.PIL.Image.INeed, Minst.INeed
     {
         public List<ContensTreeVM> Contents { get; } = new List<ContensTreeVM>();
         public Notify<string> CurrentContens { get; } = new Notify<string>();
@@ -24,13 +25,16 @@ namespace WpfApp
         public Notify<string> YAxisTitle { get; } = new Notify<string>();
         public Notify<string> GraphTitle { get; } = new Notify<string>();
 
-        public Action<string> ShowImage { get; set; }
+        public Action<string> ShowImageFile { get; set; }
+        public Action<byte[][]> ShowImageBinary { get; set; }
 
         public MainWindowVM()
         {
             MakeContentsTree();
             Std.Need = this;
             global::Contents.MatPlotLib.Plot.Need = this;
+            global::Contents.PIL.Image.Need = this;
+            global::Contents.Minst.Need = this;
         }
 
         public void Execute()
@@ -55,20 +59,24 @@ namespace WpfApp
 
         void MakeContentsTree()
         {
-            var ch0 = new ContensTreeVM { Name = "Ch1" };
-            ch0.Nodes.Add(new ContensTreeVM { Name = nameof(Hungry), Execute = Hungry.Execute });
-            ch0.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = SimpleGraph.Execute });
-            ch0.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = ImageShow.Execute });
-            ch0.Nodes.Add(new ContensTreeVM { Name = nameof(Man), Execute = Man.Execute });
-            ch0.Nodes.Add(new ContensTreeVM { Name = nameof(SinCosGraph), Execute = SinCosGraph.Execute });
-            Contents.Add(ch0);
-            
-            var ch1 = new ContensTreeVM { Name = "Ch2" };
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(AndGate), Execute = AndGate.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(OrGate), Execute = OrGate.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(NAndGate), Execute = NAndGate.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(XOrGate), Execute = XOrGate.Execute });
+            var ch1 = new ContensTreeVM { Name = "Ch1" };
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Hungry), Execute = Hungry.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = SimpleGraph.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = ImageShow.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Man), Execute = Man.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SinCosGraph), Execute = SinCosGraph.Execute });
             Contents.Add(ch1);
+            
+            var ch2 = new ContensTreeVM { Name = "Ch2" };
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(AndGate), Execute = AndGate.Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(OrGate), Execute = OrGate.Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(NAndGate), Execute = NAndGate.Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(XOrGate), Execute = XOrGate.Execute });
+            Contents.Add(ch2);
+
+            var ch3 = new ContensTreeVM { Name = "Ch3" };
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(MinstShow), Execute = MinstShow.Execute });
+            Contents.Add(ch3);
         }
 
         void Std.INeed.Print(string text)
@@ -91,13 +99,17 @@ namespace WpfApp
             }
         }
 
-        void Plot.INeed.ShowImage(string path)=> ShowImage(Path.Combine(GetImageRoot(), path.Replace("../", "")));
+        void Plot.INeed.ShowImage(string path)=> ShowImageFile(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 
         void Plot.INeed.SetXLabel(string label) => XAxisTitle.Value = label;
 
         void Plot.INeed.SetYLabel(string label) => YAxisTitle.Value = label;
 
         void Plot.INeed.SetTitle(string title) => GraphTitle.Value = title;
+
+        byte[] Minst.INeed.LoadFile(string path) => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
+
+        void Contents.PIL.Image.INeed.Show(byte[][] bin) => ShowImageBinary(bin);
 
         string GetImageRoot() => Path.GetDirectoryName(FindNearFile("Project.sln"));
 

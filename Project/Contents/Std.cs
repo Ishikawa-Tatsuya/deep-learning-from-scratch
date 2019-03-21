@@ -13,7 +13,7 @@ namespace Contents
 
         public static INeed Need { get; set; }
         
-        public static void print(string text) => Need.Print(text);
+        public static void print(object text) => Need.Print(text.ToString());
 
         public static double[] Mul(this double[] l, int[] r) => Mul(l, r.Select(e=>(double)e).ToArray());
 
