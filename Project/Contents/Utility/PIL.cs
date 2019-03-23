@@ -1,6 +1,6 @@
 ﻿namespace Contents.Utility
 {
-    public class PIL
+    public class pil
     {
         public interface INeed
         {
@@ -8,7 +8,7 @@
         }
 
         INeed need;
-        public PIL(INeed need) => this.need = need;
+        public pil(INeed need) => this.need = need;
         public Image fromarray(byte[][] src) => new Image(need, src);
 
         public class Image

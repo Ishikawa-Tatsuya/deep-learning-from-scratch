@@ -1,25 +1,26 @@
 ﻿using Contents.Utility;
-using np = Contents.Utility.Numpy;
+using System.Linq;
+using np = Contents.Utility.numpy;
 
 namespace Contents.ch02
 {
-    public class AndGate
+    public class and_gate
     {
-        public Std std { get; set; }
+        public std std { get; set; }
 
         internal static int AND(int x1, int x2)
         {
             var x = np.array(x1, x2);
             var w = np.array(0.5, 0.5);
             var b = -0.7;
-            var tmp = np.sum(w.Mul(x)) + b;
+            var tmp = w.mul(x).Sum() + b;
             if (tmp <= 0)
                 return 0;
             else
                 return 1;
         }
 
-        public void Execute()
+        public void main()
         {
             foreach (var xs in new[] { new[] { 0, 0 }, new[] { 1, 0 }, new[] { 0, 1 }, new[] { 1, 1 } })
             {

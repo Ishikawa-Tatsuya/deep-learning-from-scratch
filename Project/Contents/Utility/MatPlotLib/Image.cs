@@ -1,8 +1,8 @@
-﻿namespace Contents.Utility.MatPlotLib
+﻿namespace Contents.Utility.matplotlib
 {
-    public class Image
+    public class image
     {
         public string Path { get; }
-        public Image(string path) => Path = path;
+        public image(string path) => Path = path;
     }
 }

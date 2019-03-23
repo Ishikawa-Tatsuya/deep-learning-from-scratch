@@ -1,6 +1,6 @@
-﻿namespace Contents.Utility.MatPlotLib
+﻿namespace Contents.Utility.matplotlib
 {
-    public class Plot
+    public class plotlib
     {
         public interface INeed
         {
@@ -14,9 +14,9 @@
 
         INeed need;
 
-        public Plot(INeed need) => this.need = need;
+        public plotlib(INeed need) => this.need = need;
 
-        public void imshow(Image img) => need.ShowImage(img.Path);
+        public void imshow(image img) => need.ShowImage(img.Path);
 
         public void ylim(double min, double max) => need.SetYLim(min, max);
 

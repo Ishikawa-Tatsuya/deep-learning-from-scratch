@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Contents.Utility
 {
-    public static class Functions
+    public static class functions
     {
         public static double[][] sigmoid(double[][] x) => x.Select(e => sigmoid(e)).ToArray();
 

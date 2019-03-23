@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Contents.Utility
 {
-    public static class Numpy
+    public static class numpy
     {
         public static double[] arange(double start, double last, double interval)
         {
@@ -15,22 +15,18 @@ namespace Contents.Utility
             }
             return list.ToArray();
         }
-        
-        public static double sum(double[] vals) => vals.Sum();
 
         public static T[] array<T>(params T[] vals) => vals; 
 
         public static double[] cos(double[] src) => src.Select(e => Math.Cos(e)).ToArray();
 
         public static double[] sin(double[] src) => src.Select(e => Math.Sin(e)).ToArray();
-
-        public static byte[][] uint8(double[][] src) => src.Select(x=>x.Select(y=>(byte)y).ToArray()).ToArray();
-
-        public static byte[][] uint8(byte[][] src) => src;
-
+        
         public static string shape<T>(this T[] target) => "(" + target.Length + ")";
 
         public static double[] dot(byte[] l, double[][] r) => dot(l.Select(e => (double)e).ToArray(), r);
+
+        public static double[][] dot(double[][] l, double[][] r) => l.Select(e => dot(e, r)).ToArray();
 
         public static double[] dot(double[] l, double[][] r)
         {
@@ -49,10 +45,11 @@ namespace Contents.Utility
             return dst.ToArray();
         }
 
-        public static double[][] dot(double[][] l, double[][] r) => l.Select(e => dot(e, r)).ToArray();
-
-        //配列長さ0は未サポート
-        public static string shape<T>(this T[][] target) => "(" + target.Length + "," + target[0].Length + ")";
+        public static string shape<T>(this T[][] target)
+        {
+            if (target.Length == 0) throw new NotSupportedException();
+            return "(" + target.Length + "," + target[0].Length + ")";
+        }
 
         public static T[][] reshape<T>(this T[] src, int rowCount, int colCount)
         {
@@ -71,7 +68,9 @@ namespace Contents.Utility
             return dst;
         }
 
-        internal static int argmax(double[] vals)
+        public static int[] argmax(double[][] all, int axis) => all.Select(e => argmax(e)).ToArray();
+
+        public static int argmax(double[] vals)
         {
             int index = 0;
             double max = double.MinValue;
@@ -85,7 +84,5 @@ namespace Contents.Utility
             }
             return index;
         }
-
-        internal static int[] argmax(double[][] all, int axis) => all.Select(e => argmax(e)).ToArray();
     }
 }

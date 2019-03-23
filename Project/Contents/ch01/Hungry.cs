@@ -2,11 +2,11 @@
 
 namespace Contents.ch01
 {
-    public class Hungry
+    public class hungry
     {
-        public Std std { get; set; }
+        public std std { get; set; }
 
-        public void Execute()
+        public void main()
             => std.print("I'm hungry!");
     }
 }

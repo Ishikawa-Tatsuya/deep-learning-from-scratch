@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Contents.Utility
 {
-    public class Std
+    public class std
     {
         public interface INeed
         {
@@ -14,17 +14,17 @@ namespace Contents.Utility
 
         INeed need;
 
-        public Std(INeed need) => this.need = need;
+        public std(INeed need) => this.need = need;
         public void print(object text) => need.Print(text.ToString());
-        public string[] ReadAllLines(string path) => need.ReadAllLines(path);
         public string str<T>(params T[] args) => "[" + string.Join(", ", args) + "]";
+        public string[] read_lines(string path) => need.ReadAllLines(path);
     }
 
-    public static class StdExt
+    public static class std_ext
     {
-        public static double[][] Add(this double[][] l, double[] r) => l.Select(e=>e.Add(r)).ToArray();
+        public static double[][] add(this double[][] l, double[] r) => l.Select(e=>e.add(r)).ToArray();
 
-        public static double[] Add(this double[] l, double[] r)
+        public static double[] add(this double[] l, double[] r)
         {
             if (l.Length != r.Length) throw new NotSupportedException();
             var list = new List<double>();
@@ -35,9 +35,9 @@ namespace Contents.Utility
             return list.ToArray();
         }
 
-        public static double[] Mul(this double[] l, int[] r) => Mul(l, r.Select(e=>(double)e).ToArray());
+        public static double[] mul(this double[] l, int[] r) => mul(l, r.Select(e=>(double)e).ToArray());
 
-        public static double[] Mul(this double[] l, double[] r)
+        public static double[] mul(this double[] l, double[] r)
         {
             if (l.Length != r.Length) throw new NotSupportedException();
             var list = new List<double>();
@@ -48,7 +48,7 @@ namespace Contents.Utility
             return list.ToArray();
         }
         
-        public static T[] TakeSkip<T>(this T[] src, int start, int count)
+        public static T[] skip_take<T>(this T[] src, int start, int count)
         {
             var list = new List<T>();
             for (int i = 0; i < count; i++)

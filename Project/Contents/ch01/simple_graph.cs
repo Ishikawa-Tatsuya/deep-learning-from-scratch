@@ -1,13 +1,13 @@
-﻿using Contents.Utility.MatPlotLib;
-using np = Contents.Utility.Numpy;
+﻿using Contents.Utility.matplotlib;
+using np = Contents.Utility.numpy;
 
 namespace Contents.ch01
 {
-    public class SimpleGraph
+    public class simple_graph
     {
-        public Plot plt { get; set; }
+        public plotlib plt { get; set; }
 
-        public void Execute()
+        public void main()
         {
             // データの作成
             var x = np.arange(0, 6, 0.1); // 0から6まで0.1刻みで生成

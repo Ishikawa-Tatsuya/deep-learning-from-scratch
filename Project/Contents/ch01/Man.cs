@@ -2,17 +2,17 @@
 
 namespace Contents.ch01
 {
-    public class Man
+    public class man
     {
-        public Std std { get; set; }
+        public std std { get; set; }
 
-        public class Target
+        public class target
         {
-            Std std;
+            std std;
 
             string name;
 
-            public Target(Std std, string name)
+            public target(std std, string name)
             {
                 this.std = std;
                 this.name = name;
@@ -27,9 +27,9 @@ namespace Contents.ch01
 
         }
 
-        public void Execute()
+        public void main()
         {
-            var m = new Target(std, "David");
+            var m = new target(std, "David");
             m.hello();
             m.goodbye();
         }

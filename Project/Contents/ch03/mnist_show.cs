@@ -1,21 +1,21 @@
 ﻿using Contents.Utility;
-using np = Contents.Utility.Numpy;
+using np = Contents.Utility.numpy;
 
 namespace Contents.ch03
 {
-    public class MinstShow
+    public class mnist_show
     {
-        public Std std { get; set; }
-        public Minst minst { get; set; }
-        public PIL pil { get; set; }
+        public std std { get; set; }
+        public minst minst { get; set; }
+        public pil pil { get; set; }
 
         void img_show(byte[][] img)
         {
-            var pil_img = pil.fromarray(np.uint8(img));
+            var pil_img = pil.fromarray(img);
             pil_img.show();
         }
 
-        public void Execute()
+        public void main()
         {
             (var x_train, var t_train, var x_test, var t_test) = minst.load_mnist();
 

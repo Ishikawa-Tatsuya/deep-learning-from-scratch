@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Contents.Utility
 {
-    public class Minst
+    public class minst
     {
         public interface INeed
         {
@@ -12,7 +12,7 @@ namespace Contents.Utility
 
         INeed need;
 
-        public Minst(INeed need) => this.need = need;
+        public minst(INeed need) => this.need = need;
 
         public (double[][] x_train, byte[] t_train, double[][] x_test, byte[] t_test) load_mnist_normalize(bool one_hot_label = false)
         {
