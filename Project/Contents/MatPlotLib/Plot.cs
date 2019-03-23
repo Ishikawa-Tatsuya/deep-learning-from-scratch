@@ -1,4 +1,6 @@
-﻿namespace Contents.MatPlotLib
+﻿using System;
+
+namespace Contents.MatPlotLib
 {
     public static class Plot
     {
@@ -8,12 +10,15 @@
             void SetXLabel(string label);
             void SetYLabel(string label);
             void SetTitle(string title);
+            void SetYLim(double min, double max);
             void ShowImage(string path);
         }
 
         public static INeed Need { get; set; }
 
         internal static void imshow(Image img) => Need.ShowImage(img.Path);
+
+        internal static void ylim(double min, double max) => Need.SetYLim(min, max);
 
         internal static void plot(double[] x, double[] y) => Need.Plot(x, y, string.Empty, string.Empty);
 

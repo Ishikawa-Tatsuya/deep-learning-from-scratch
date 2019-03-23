@@ -15,7 +15,7 @@ namespace Contents.ch03
 
         public static void Execute()
         {
-            (var x_train, var t_train, var x_test, var t_test) = load_mnist(flatten: true, normalize: false);
+            (var x_train, var t_train, var x_test, var t_test) = load_mnist();
 
             var img = x_train[0];
             var label = t_train[0];

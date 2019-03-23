@@ -23,6 +23,8 @@ namespace WpfApp
         public LineSeriesViewModel[] Graph { get; } = Enumerable.Range(0, 10).Select(e => new LineSeriesViewModel()).ToArray();
         public Notify<string> XAxisTitle { get; } = new Notify<string>();
         public Notify<string> YAxisTitle { get; } = new Notify<string>();
+        public Notify<double> YMax { get; } = new Notify<double>();
+        public Notify<double> YMin { get; } = new Notify<double>();
         public Notify<string> GraphTitle { get; } = new Notify<string>();
 
         public Action<string> ShowImageFile { get; set; }
@@ -52,6 +54,11 @@ namespace WpfApp
             {
                 e.Coordinates.Clear();
             }
+            XAxisTitle.Value = string.Empty;
+            YAxisTitle.Value = string.Empty;
+            YMin.Value = double.NaN;
+            YMax.Value = double.NaN;
+            GraphTitle.Value = string.Empty;
 
             //実行
             node.Execute();
@@ -61,10 +68,10 @@ namespace WpfApp
         {
             var ch1 = new ContensTreeVM { Name = "Ch1" };
             ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Hungry), Execute = Hungry.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = SimpleGraph.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = ImageShow.Execute });
             ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Man), Execute = Man.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = SimpleGraph.Execute });
             ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SinCosGraph), Execute = SinCosGraph.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = ImageShow.Execute });
             Contents.Add(ch1);
             
             var ch2 = new ContensTreeVM { Name = "Ch2" };
@@ -75,10 +82,16 @@ namespace WpfApp
             Contents.Add(ch2);
 
             var ch3 = new ContensTreeVM { Name = "Ch3" };
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(StepFunction), Execute = StepFunction.Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(Sigmoid), Execute = Sigmoid.Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(SigStepCompare), Execute = SigStepCompare.Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(Relu), Execute = Relu.Execute });
             ch3.Nodes.Add(new ContensTreeVM { Name = nameof(MinstShow), Execute = MinstShow.Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(NeuralnetMinst), Execute = NeuralnetMinst.Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(NeuralnetMinstBatch), Execute = NeuralnetMinstBatch.Execute });
             Contents.Add(ch3);
         }
-
+        
         void Std.INeed.Print(string text)
         {
             if (!string.IsNullOrEmpty(Log.Value))
@@ -87,6 +100,9 @@ namespace WpfApp
             }
             Log.Value += text;
         }
+
+        string[] Std.INeed.ReadAllLines(string path)
+             => File.ReadAllLines(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 
         void Plot.INeed.Plot(double[] x, double[] y, string lineStyle, string label)
         {
@@ -106,6 +122,12 @@ namespace WpfApp
         void Plot.INeed.SetYLabel(string label) => YAxisTitle.Value = label;
 
         void Plot.INeed.SetTitle(string title) => GraphTitle.Value = title;
+
+        void Plot.INeed.SetYLim(double min, double max)
+        {
+            YMin.Value = min;
+            YMax.Value = max;
+        }
 
         byte[] Minst.INeed.LoadFile(string path) => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 

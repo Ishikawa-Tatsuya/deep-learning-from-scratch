@@ -15,7 +15,7 @@ namespace Contents
             }
             return list.ToArray();
         }
-
+        
         public static double sum(double[] vals) => vals.Sum();
 
         public static T[] array<T>(params T[] vals) => vals; 
@@ -29,6 +29,27 @@ namespace Contents
         public static byte[][] uint8(byte[][] src) => src;
 
         public static string shape<T>(this T[] target) => "(" + target.Length + ")";
+
+        public static double[] dot(byte[] l, double[][] r) => dot(l.Select(e => (double)e).ToArray(), r);
+
+        public static double[] dot(double[] l, double[][] r)
+        {
+            if (l.Length != r.Length || r.Length == 0) throw new NotSupportedException();
+
+            var dst = new List<double>(); 
+            for (int j = 0; j < r[0].Length; j++)
+            {
+                double sum = 0;
+                for (int i = 0; i < l.Length; i++)
+                {
+                    sum += l[i] * r[i][j];
+                }
+                dst.Add(sum);
+            }
+            return dst.ToArray();
+        }
+
+        public static double[][] dot(double[][] l, double[][] r) => l.Select(e => dot(e, r)).ToArray();
 
         //配列長さ0は未サポート
         public static string shape<T>(this T[][] target) => "(" + target.Length + "," + target[0].Length + ")";
@@ -49,5 +70,22 @@ namespace Contents
             }
             return dst;
         }
+
+        internal static int argmax(double[] vals)
+        {
+            int index = 0;
+            double max = double.MinValue;
+            for (int i = 0; i < vals.Length; i++)
+            {
+                if (max < vals[i])
+                {
+                    max = vals[i];
+                    index = i;
+                }
+            }
+            return index;
+        }
+
+        internal static int[] argmax(double[][] all, int axis) => all.Select(e => argmax(e)).ToArray();
     }
 }

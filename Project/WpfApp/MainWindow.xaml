@@ -66,8 +66,8 @@
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
                 </oxyplot:Plot.Series>
                 <oxyplot:Plot.Axes>
-                    <oxyplot:LinearAxis Position="Left" Title="{Binding XAxisTitle.Value}"/>
-                    <oxyplot:LinearAxis Position="Bottom" Title="{Binding YAxisTitle.Value}"/>
+                    <oxyplot:LinearAxis Position="Left" Title="{Binding YAxisTitle.Value}" Maximum="{Binding YMax.Value}" Minimum="{Binding YMin.Value}"/>
+                    <oxyplot:LinearAxis Position="Bottom" Title="{Binding XAxisTitle.Value}"/>
                 </oxyplot:Plot.Axes>
             </oxyplot:Plot>
             <Grid Grid.Row="1">
