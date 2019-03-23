@@ -39,7 +39,7 @@ namespace WpfApp
 
         public Action<string> ShowImageFile { get; set; }
         public Action<byte[][]> ShowImageBinary { get; set; }
-        public Action<Action> SafeCall { get; set; }
+        public Action<Action> MatchContext { get; set; }
 
         public MainWindowVM() => MakeContentsTree();
 
@@ -116,7 +116,7 @@ namespace WpfApp
 
         void Std.INeed.Print(string text)
         {
-            SafeCall(() =>
+            MatchContext(() =>
             {
                 if (!string.IsNullOrEmpty(Log.Value))
                 {
@@ -131,7 +131,7 @@ namespace WpfApp
 
         void Plot.INeed.Plot(double[] x, double[] y, string lineStyle, string label)
         {
-            SafeCall(() =>
+            MatchContext(() =>
             {
                 if (x.Length != y.Length) throw new NotSupportedException();
 
@@ -152,20 +152,20 @@ namespace WpfApp
         }
 
         void Plot.INeed.ShowImage(string path)
-            => SafeCall(() =>ShowImageFile(Path.Combine(GetImageRoot(), path.Replace("../", ""))));
+            => MatchContext(() =>ShowImageFile(Path.Combine(GetImageRoot(), path.Replace("../", ""))));
 
         void Plot.INeed.SetXLabel(string label)
-           => SafeCall(() => XAxisTitle.Value = label);
+           => MatchContext(() => XAxisTitle.Value = label);
 
         void Plot.INeed.SetYLabel(string label)
-           => SafeCall(() => YAxisTitle.Value = label);
+           => MatchContext(() => YAxisTitle.Value = label);
 
         void Plot.INeed.SetTitle(string title)
-           => SafeCall(() => GraphTitle.Value = title);
+           => MatchContext(() => GraphTitle.Value = title);
 
         void Plot.INeed.SetYLim(double min, double max)
         {
-            SafeCall(() =>
+            MatchContext(() =>
             {
                 YMin.Value = min;
                 YMax.Value = max;
@@ -175,7 +175,7 @@ namespace WpfApp
         byte[] Minst.INeed.LoadFile(string path) 
             => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 
-        void PIL.INeed.Show(byte[][] bin) => SafeCall(() => ShowImageBinary(bin));
+        void PIL.INeed.Show(byte[][] bin) => MatchContext(() => ShowImageBinary(bin));
 
         string GetImageRoot() => Path.GetDirectoryName(FindNearFile("Project.sln"));
 

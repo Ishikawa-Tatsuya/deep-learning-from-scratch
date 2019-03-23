@@ -17,7 +17,7 @@
             <c:Method Name ="GetSelectedContentsItem" Invoker="GetSelectedContentsItem"/>
             <c:Method Name ="ShowImageFile" Invoker="ShowImageFile"/>
             <c:Method Name ="ShowImageBinary" Invoker="ShowImageBinary"/>
-            <c:Method Name ="SafeCall" Invoker="SafeCall"/>
+            <c:Method Name ="MatchContext" Invoker="MatchContext"/>
         </c:MethodCollection>
     </c:Connection.Methods>
 

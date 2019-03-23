@@ -12,7 +12,7 @@ namespace WpfApp
 
         public ContensTreeVM GetSelectedContentsItem() => _contentsTree.SelectedItem as ContensTreeVM;
 
-        public void SafeCall(Action core) => Dispatcher.Invoke(core);
+        public void MatchContext(Action core) => Dispatcher.Invoke(core);
 
         public void ShowImageFile(string path)
         {
