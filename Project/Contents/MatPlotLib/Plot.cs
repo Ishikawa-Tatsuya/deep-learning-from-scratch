@@ -27,9 +27,8 @@ namespace Contents.MatPlotLib
         internal static void xlabel(string label) => Need.SetXLabel(label);
 
         internal static void ylabel(string title) => Need.SetYLabel(title);
-
-        internal static void plot(double[] x, double[] y, string label) => Need.Plot(x, y, string.Empty, label);
-        internal static void plot(double[] x, double[] y, string linestyle, string label) => Need.Plot(x, y, linestyle, label);
+        
+        internal static void plot(double[] x, double[] y, string linestyle = "", string label = "") => Need.Plot(x, y, linestyle, label);
 
         internal static void show() { }
         internal static void legend() { }

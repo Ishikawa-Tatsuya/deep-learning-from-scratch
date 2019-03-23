@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Media;
 using Contents;
 using Contents.ch01;
 using Contents.ch02;
@@ -14,13 +16,19 @@ namespace WpfApp
 {
     public class MainWindowVM : Std.INeed, Plot.INeed, Contents.PIL.Image.INeed, Minst.INeed
     {
+        static readonly Color[] LineDefaultColors = new[] {
+                    Colors.Blue, Colors.Orange, Colors.Green,
+                    Colors.AliceBlue, Colors.OrangeRed, Colors.GreenYellow,
+                    Colors.DarkBlue, Colors.DarkOrange, Colors.DarkGreen,
+                    Colors.Black };
+
         public List<ContensTreeVM> Contents { get; } = new List<ContensTreeVM>();
         public Notify<string> CurrentContens { get; } = new Notify<string>();
         public Func<ContensTreeVM> GetSelectedContentsItem { get; set; }
 
         public Notify<string> Log { get; } = new Notify<string>();
 
-        public LineSeriesViewModel[] Graph { get; } = Enumerable.Range(0, 10).Select(e => new LineSeriesViewModel()).ToArray();
+        public LineSeriesViewModel[] Graph { get; } = Enumerable.Range(0, 10).Select(i => new LineSeriesViewModel { Color = new Notify<Color>(LineDefaultColors[i])}).ToArray();
         public Notify<string> XAxisTitle { get; } = new Notify<string>();
         public Notify<string> YAxisTitle { get; } = new Notify<string>();
         public Notify<double> YMax { get; } = new Notify<double>();
@@ -29,6 +37,9 @@ namespace WpfApp
 
         public Action<string> ShowImageFile { get; set; }
         public Action<byte[][]> ShowImageBinary { get; set; }
+        public Action<Action> SafeCall { get; set; }
+
+        public Notify<bool> Executable { get; } = new Notify<bool>(true);
 
         public MainWindowVM()
         {
@@ -39,19 +50,20 @@ namespace WpfApp
             global::Contents.Minst.Need = this;
         }
 
-        public void Execute()
+        public async void Execute()
         {
             //選択されているアイテムを取得
             var node = GetSelectedContentsItem();
             if (node.Execute == null) return;
 
             //実行中の名前を表示
-            CurrentContens.Value = node.Name;
+            CurrentContens.Value = node.Name + " Executing ...";
 
             //クリア
             Log.Value = string.Empty;
             foreach (var e in Graph)
             {
+                e.Title.Value = string.Empty;
                 e.Coordinates.Clear();
             }
             XAxisTitle.Value = string.Empty;
@@ -61,7 +73,11 @@ namespace WpfApp
             GraphTitle.Value = string.Empty;
 
             //実行
-            node.Execute();
+            Executable.Value = false;
+            await Task.Factory.StartNew(()=> node.Execute());
+            Executable.Value = true;
+
+            CurrentContens.Value = node.Name;
         }
 
         void MakeContentsTree()
@@ -94,11 +110,14 @@ namespace WpfApp
         
         void Std.INeed.Print(string text)
         {
-            if (!string.IsNullOrEmpty(Log.Value))
+            SafeCall(() =>
             {
-                Log.Value += Environment.NewLine;
-            }
-            Log.Value += text;
+                if (!string.IsNullOrEmpty(Log.Value))
+                {
+                    Log.Value += Environment.NewLine;
+                }
+                Log.Value += text;
+            });
         }
 
         string[] Std.INeed.ReadAllLines(string path)
@@ -106,32 +125,50 @@ namespace WpfApp
 
         void Plot.INeed.Plot(double[] x, double[] y, string lineStyle, string label)
         {
-            if (x.Length != y.Length) throw new NotSupportedException();
-
-            var target = Graph.FirstOrDefault(e => e.Coordinates.Count == 0);
-            for (int i = 0; i < x.Length; i++)
+            SafeCall(() =>
             {
-                target.Coordinates.Add(new DataPoint(x[i], y[i]));
-            }
+                if (x.Length != y.Length) throw new NotSupportedException();
+
+                var target = Graph.FirstOrDefault(e => e.Coordinates.Count == 0);
+                target.Title.Value = label;
+                switch (lineStyle)
+                {
+                    case "--":
+                    case "k--":
+                        target.LineStyle.Value = LineStyle.Dash;
+                        break;
+                }
+                for (int i = 0; i < x.Length; i++)
+                {
+                    target.Coordinates.Add(new DataPoint(x[i], y[i]));
+                }
+            });
         }
 
-        void Plot.INeed.ShowImage(string path)=> ShowImageFile(Path.Combine(GetImageRoot(), path.Replace("../", "")));
+        void Plot.INeed.ShowImage(string path)
+            => SafeCall(() =>ShowImageFile(Path.Combine(GetImageRoot(), path.Replace("../", ""))));
 
-        void Plot.INeed.SetXLabel(string label) => XAxisTitle.Value = label;
+        void Plot.INeed.SetXLabel(string label)
+           => SafeCall(() => XAxisTitle.Value = label);
 
-        void Plot.INeed.SetYLabel(string label) => YAxisTitle.Value = label;
+        void Plot.INeed.SetYLabel(string label)
+           => SafeCall(() => YAxisTitle.Value = label);
 
-        void Plot.INeed.SetTitle(string title) => GraphTitle.Value = title;
+        void Plot.INeed.SetTitle(string title)
+           => SafeCall(() => GraphTitle.Value = title);
 
         void Plot.INeed.SetYLim(double min, double max)
         {
-            YMin.Value = min;
-            YMax.Value = max;
+            SafeCall(() =>
+            {
+                YMin.Value = min;
+                YMax.Value = max;
+            });
         }
 
         byte[] Minst.INeed.LoadFile(string path) => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 
-        void Contents.PIL.Image.INeed.Show(byte[][] bin) => ShowImageBinary(bin);
+        void Contents.PIL.Image.INeed.Show(byte[][] bin) => SafeCall(() => ShowImageBinary(bin));
 
         string GetImageRoot() => Path.GetDirectoryName(FindNearFile("Project.sln"));
 

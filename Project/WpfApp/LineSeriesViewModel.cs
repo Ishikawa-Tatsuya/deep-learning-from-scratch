@@ -9,6 +9,7 @@ namespace WpfApp
         public ObservableCollectionEx<DataPoint> Coordinates { get; set; } = new ObservableCollectionEx<DataPoint>();
         public Notify<string> Title { get; set; } = new Notify<string>(string.Empty);
         public Notify<Color> Color { get; set; } = new Notify<Color>(Colors.Black);
+        public Notify<LineStyle> LineStyle { get; set; } = new Notify<LineStyle>(OxyPlot.LineStyle.Solid);
         public MarkerType MarkerType { get; set; } = MarkerType.Plus;
     }
 }

@@ -17,6 +17,7 @@
             <c:Method Name ="GetSelectedContentsItem" Invoker="GetSelectedContentsItem"/>
             <c:Method Name ="ShowImageFile" Invoker="ShowImageFile"/>
             <c:Method Name ="ShowImageBinary" Invoker="ShowImageBinary"/>
+            <c:Method Name ="SafeCall" Invoker="SafeCall"/>
         </c:MethodCollection>
     </c:Connection.Methods>
 
@@ -25,7 +26,7 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="_contentsTree" ItemsSource="{Binding Contents}" MouseDoubleClick="{c:Event Execute }">
+        <TreeView x:Name="_contentsTree" ItemsSource="{Binding Contents}" MouseDoubleClick="{c:Event Execute }" IsEnabled="{Binding Executable.Value}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True" />
@@ -44,25 +45,25 @@
             </Grid.RowDefinitions>
             <oxyplot:Plot LegendBackground="#c0c0c0c0" Grid.Row="0" Title="{Binding GraphTitle.Value}">
                 <oxyplot:Plot.Series>
-                    <oxyplot:LineSeries DataContext="{Binding Graph[0]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[0]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[1]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[1]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[2]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[2]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[3]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[3]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[4]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[4]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[5]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[5]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[6]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[6]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[7]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[7]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[8]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[8]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
-                    <oxyplot:LineSeries DataContext="{Binding Graph[9]}" LineStyle="Solid" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="1"
+                    <oxyplot:LineSeries DataContext="{Binding Graph[9]}" LineStyle="{Binding LineStyle.Value}" Color="{Binding Color.Value}"  MarkerSize="2" MarkerType="{Binding MarkerType}" MarkerStroke="{Binding Color.Value}" MarkerStrokeThickness="0"
                                     MarkerFill="{Binding Color.Value}" Title="{Binding Title.Value}" ItemsSource="{Binding Coordinates}" />
                 </oxyplot:Plot.Series>
                 <oxyplot:Plot.Axes>
