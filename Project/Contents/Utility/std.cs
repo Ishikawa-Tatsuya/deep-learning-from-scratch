@@ -47,6 +47,8 @@ namespace Contents.Utility
             }
             return list.ToArray();
         }
+
+        public static double[] minus(this double[] src) => src.Select(e => -e).ToArray();
         
         public static T[] skip_take<T>(this T[] src, int start, int count)
         {

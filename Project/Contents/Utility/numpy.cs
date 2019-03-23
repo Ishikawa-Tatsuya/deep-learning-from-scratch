@@ -16,6 +16,41 @@ namespace Contents.Utility
             return list.ToArray();
         }
 
+        public static T[] zeros_like<T>(T[] x) => new T[x.Length];
+
+        public static T[][] zeros_like<T>(T[][] x) => x.Select(e => new T[e.Length]).ToArray();
+
+        public static (double[][] x, double[][] y) meshgrid(double[] x0, double[] y0)
+        {
+            var x = y0.Select(e => x0).ToArray();
+            var y = y0.Select(e => Enumerable.Range(0, x0.Length).Select(_ => e).ToArray()).ToArray();
+            return (x, y);
+        }
+
+        public static T[] flatten<T>(this T[][] src)
+        {
+            var list = new List<T>();
+            foreach (var e in src)
+            {
+                list.AddRange(e);
+            }
+            return list.ToArray();
+        }
+
+        public static TT[][] T<TT>(this TT[][] src)
+        {
+            var dst = new TT[src[0].Length][];
+            for (int i = 0; i < dst.Length; i++)
+            {
+                dst[i] = new TT[src.Length];
+                for (int j = 0; j < dst[i].Length; j++)
+                {
+                    dst[i][j] = src[j][i];
+                }
+            }
+            return dst;
+        }
+
         public static T[] array<T>(params T[] vals) => vals; 
 
         public static double[] cos(double[] src) => src.Select(e => Math.Cos(e)).ToArray();

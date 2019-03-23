@@ -68,7 +68,7 @@
                 </oxyplot:Plot.Series>
                 <oxyplot:Plot.Axes>
                     <oxyplot:LinearAxis Position="Left" Title="{Binding YAxisTitle.Value}" Maximum="{Binding YMax.Value}" Minimum="{Binding YMin.Value}"/>
-                    <oxyplot:LinearAxis Position="Bottom" Title="{Binding XAxisTitle.Value}"/>
+                    <oxyplot:LinearAxis Position="Bottom" Title="{Binding XAxisTitle.Value}" Maximum="{Binding XMax.Value}" Minimum="{Binding XMin.Value}"/>
                 </oxyplot:Plot.Axes>
             </oxyplot:Plot>
             <Grid Grid.Row="1">

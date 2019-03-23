@@ -1,5 +1,4 @@
 ﻿using Contents.Utility;
-using np = Contents.Utility.numpy;
 
 namespace Contents.ch03
 {

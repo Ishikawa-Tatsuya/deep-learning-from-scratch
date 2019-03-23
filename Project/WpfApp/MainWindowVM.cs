@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Contents.ch01;
 using Contents.ch02;
 using Contents.ch03;
+using Contents.ch04;
 using Contents.Utility;
 using Contents.Utility.matplotlib;
 using OxyPlot;
@@ -32,6 +33,8 @@ namespace WpfApp
 
         public LineSeriesViewModel[] Graph { get; } = Enumerable.Range(0, 10).Select(i => new LineSeriesViewModel { Color = new Notify<Color>(LineDefaultColors[i])}).ToArray();
         public Notify<string> XAxisTitle { get; } = new Notify<string>();
+        public Notify<double> XMax { get; } = new Notify<double>();
+        public Notify<double> XMin { get; } = new Notify<double>();
         public Notify<string> YAxisTitle { get; } = new Notify<string>();
         public Notify<double> YMax { get; } = new Notify<double>();
         public Notify<double> YMin { get; } = new Notify<double>();
@@ -60,6 +63,8 @@ namespace WpfApp
                 e.Coordinates.Clear();
             }
             XAxisTitle.Value = string.Empty;
+            XMin.Value = double.NaN;
+            XMax.Value = double.NaN;
             YAxisTitle.Value = string.Empty;
             YMin.Value = double.NaN;
             YMax.Value = double.NaN;
@@ -99,6 +104,12 @@ namespace WpfApp
             ch3.Nodes.Add(new ContensTreeVM { Name = nameof(neuralnet_mnist), Execute = CreateContent<neuralnet_mnist>().main });
             ch3.Nodes.Add(new ContensTreeVM { Name = nameof(neuralnet_minst_batch), Execute = CreateContent<neuralnet_minst_batch>().main });
             Contents.Add(ch3);
+
+            var ch4 = new ContensTreeVM { Name = "Ch4" };
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_1d), Execute = CreateContent<gradient_1d>().main });
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_2d), Execute = CreateContent<gradient_2d>().main });
+            Contents.Add(ch4);
+
         }
 
         T CreateContent<T>()
@@ -172,12 +183,26 @@ namespace WpfApp
             });
         }
 
+        void plotlib.INeed.SetXLim(double min, double max)
+        {
+            MatchContext(() =>
+            {
+                XMin.Value = min;
+                XMax.Value = max;
+            });
+        }
+
+        void plotlib.INeed.Quiver(double[] x, double[] y, double[] grad0, double[] grad1, string angles, string color)
+            => ((std.INeed)this).Print("グラフは無理。ブレイク張ってコードの動作を確認してください。");
+
         byte[] minst.INeed.LoadFile(string path) 
             => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 
-        void pil.INeed.Show(byte[][] bin) => MatchContext(() => ShowImageBinary(bin));
+        void pil.INeed.Show(byte[][] bin) 
+            => MatchContext(() => ShowImageBinary(bin));
 
-        string GetImageRoot() => Path.GetDirectoryName(FindNearFile("Project.sln"));
+        string GetImageRoot()
+            => Path.GetDirectoryName(FindNearFile("Project.sln"));
 
         static string FindNearFile(string fileName)
         {
