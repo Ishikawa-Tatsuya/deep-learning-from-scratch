@@ -4,17 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using Contents;
 using Contents.ch01;
 using Contents.ch02;
 using Contents.ch03;
-using Contents.MatPlotLib;
+using Contents.Utility;
+using Contents.Utility.MatPlotLib;
 using OxyPlot;
 using VVMConnection;
 
 namespace WpfApp
 {
-    public class MainWindowVM : Std.INeed, Plot.INeed, Contents.PIL.Image.INeed, Minst.INeed
+    public class MainWindowVM : Std.INeed, Plot.INeed, PIL.INeed, Minst.INeed
     {
         static readonly Color[] LineDefaultColors = new[] {
                     Colors.Blue, Colors.Orange, Colors.Green,
@@ -22,9 +22,11 @@ namespace WpfApp
                     Colors.DarkBlue, Colors.DarkOrange, Colors.DarkGreen,
                     Colors.Black };
 
-        public List<ContensTreeVM> Contents { get; } = new List<ContensTreeVM>();
         public Notify<string> CurrentContens { get; } = new Notify<string>();
+
+        public List<ContensTreeVM> Contents { get; } = new List<ContensTreeVM>();
         public Func<ContensTreeVM> GetSelectedContentsItem { get; set; }
+        public Notify<bool> Executable { get; } = new Notify<bool>(true);
 
         public Notify<string> Log { get; } = new Notify<string>();
 
@@ -39,16 +41,7 @@ namespace WpfApp
         public Action<byte[][]> ShowImageBinary { get; set; }
         public Action<Action> SafeCall { get; set; }
 
-        public Notify<bool> Executable { get; } = new Notify<bool>(true);
-
-        public MainWindowVM()
-        {
-            MakeContentsTree();
-            Std.Need = this;
-            global::Contents.MatPlotLib.Plot.Need = this;
-            global::Contents.PIL.Image.Need = this;
-            global::Contents.Minst.Need = this;
-        }
+        public MainWindowVM() => MakeContentsTree();
 
         public async void Execute()
         {
@@ -83,31 +76,44 @@ namespace WpfApp
         void MakeContentsTree()
         {
             var ch1 = new ContensTreeVM { Name = "Ch1" };
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Hungry), Execute = Hungry.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Man), Execute = Man.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = SimpleGraph.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SinCosGraph), Execute = SinCosGraph.Execute });
-            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = ImageShow.Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Hungry), Execute = CreateContent<Hungry>().Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(Man), Execute = CreateContent<Man>().Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SimpleGraph), Execute = CreateContent<SimpleGraph>().Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(SinCosGraph), Execute = CreateContent<SinCosGraph>().Execute });
+            ch1.Nodes.Add(new ContensTreeVM { Name = nameof(ImageShow), Execute = CreateContent<ImageShow>().Execute });
             Contents.Add(ch1);
             
             var ch2 = new ContensTreeVM { Name = "Ch2" };
-            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(AndGate), Execute = AndGate.Execute });
-            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(OrGate), Execute = OrGate.Execute });
-            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(NAndGate), Execute = NAndGate.Execute });
-            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(XOrGate), Execute = XOrGate.Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(AndGate), Execute = CreateContent<AndGate>().Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(OrGate), Execute = CreateContent<OrGate>().Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(NAndGate), Execute = CreateContent<NAndGate>().Execute });
+            ch2.Nodes.Add(new ContensTreeVM { Name = nameof(XOrGate), Execute = CreateContent<XOrGate>().Execute });
             Contents.Add(ch2);
 
             var ch3 = new ContensTreeVM { Name = "Ch3" };
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(StepFunction), Execute = StepFunction.Execute });
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(Sigmoid), Execute = Sigmoid.Execute });
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(SigStepCompare), Execute = SigStepCompare.Execute });
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(Relu), Execute = Relu.Execute });
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(MinstShow), Execute = MinstShow.Execute });
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(NeuralnetMinst), Execute = NeuralnetMinst.Execute });
-            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(NeuralnetMinstBatch), Execute = NeuralnetMinstBatch.Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(StepFunction), Execute = CreateContent<StepFunction>().Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(Sigmoid), Execute = CreateContent<Sigmoid>().Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(SigStepCompare), Execute = CreateContent<SigStepCompare>().Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(Relu), Execute = CreateContent<Relu>().Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(MinstShow), Execute = CreateContent<MinstShow>().Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(NeuralnetMinst), Execute = CreateContent<NeuralnetMinst>().Execute });
+            ch3.Nodes.Add(new ContensTreeVM { Name = nameof(NeuralnetMinstBatch), Execute = CreateContent<NeuralnetMinstBatch>().Execute });
             Contents.Add(ch3);
         }
-        
+
+        T CreateContent<T>()
+        {
+            var content = Activator.CreateInstance<T>();
+            foreach (var prop in typeof(T).GetProperties().Where(e => e.GetSetMethod() != null))
+            {
+                if (prop.PropertyType == typeof(Std)) prop.SetValue(content, new Std(this));
+                else if (prop.PropertyType == typeof(Plot)) prop.SetValue(content, new Plot(this));
+                else if (prop.PropertyType == typeof(PIL)) prop.SetValue(content, new PIL(this));
+                else if (prop.PropertyType == typeof(Minst)) prop.SetValue(content, new Minst(this));
+            }
+            return content;
+        }
+
         void Std.INeed.Print(string text)
         {
             SafeCall(() =>
@@ -166,9 +172,10 @@ namespace WpfApp
             });
         }
 
-        byte[] Minst.INeed.LoadFile(string path) => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
+        byte[] Minst.INeed.LoadFile(string path) 
+            => File.ReadAllBytes(Path.Combine(GetImageRoot(), path.Replace("../", "")));
 
-        void Contents.PIL.Image.INeed.Show(byte[][] bin) => SafeCall(() => ShowImageBinary(bin));
+        void PIL.INeed.Show(byte[][] bin) => SafeCall(() => ShowImageBinary(bin));
 
         string GetImageRoot() => Path.GetDirectoryName(FindNearFile("Project.sln"));
 

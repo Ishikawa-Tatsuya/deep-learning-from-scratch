@@ -1,11 +1,12 @@
-﻿using Contents.MatPlotLib;
-using plt = Contents.MatPlotLib.Plot;
+﻿using Contents.Utility.MatPlotLib;
 
 namespace Contents.ch01
 {
-    public static class ImageShow
+    public class ImageShow
     {
-        public static void Execute()
+        public Plot plt { get; set; }
+
+        public void Execute()
         {
             var img = new Image("../dataset/lena.png"); // 画像の読み込み
             plt.imshow(img);

@@ -1,11 +1,13 @@
-﻿using np = Contents.Numpy;
-using plt = Contents.MatPlotLib.Plot;
+﻿using Contents.Utility.MatPlotLib;
+using np = Contents.Utility.Numpy;
 
 namespace Contents.ch01
 {
-    public static class SimpleGraph
+    public class SimpleGraph
     {
-        public static void Execute()
+        public Plot plt { get; set; }
+
+        public void Execute()
         {
             // データの作成
             var x = np.arange(0, 6, 0.1); // 0から6まで0.1刻みで生成

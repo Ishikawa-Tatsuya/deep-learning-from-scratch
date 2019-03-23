@@ -1,10 +1,12 @@
-﻿using static Contents.Std;
+﻿using Contents.Utility;
 
 namespace Contents.ch01
 {
-    public static class Hungry
+    public class Hungry
     {
-        public static void Execute()
-            => print("I'm hungry!");
+        public Std std { get; set; }
+
+        public void Execute()
+            => std.print("I'm hungry!");
     }
 }

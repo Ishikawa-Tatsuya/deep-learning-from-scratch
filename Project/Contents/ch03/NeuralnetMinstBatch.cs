@@ -1,30 +1,32 @@
 ﻿using System.Collections.Generic;
-using static Contents.Minst;
-using static Contents.Std;
-using static Contents.Functions;
-using np = Contents.Numpy;
+using static Contents.Utility.Functions;
+using np = Contents.Utility.Numpy;
 using System.Linq;
+using Contents.Utility;
 
 namespace Contents.ch03
 {
-    public static class NeuralnetMinstBatch
+    public class NeuralnetMinstBatch
     {
-        static (double[][] x_test, byte[] t_test) get_data()
+        public Std std { get; set; }
+        public Minst minst { get; set; }
+
+        (double[][] x_test, byte[] t_test) get_data()
         {
-            (var x_train, var t_train, var x_test, var t_test) = load_mnist_normalize(one_hot_label:false);
+            (var x_train, var t_train, var x_test, var t_test) = minst.load_mnist_normalize(one_hot_label:false);
             return (x_test, t_test);
         }
 
-        static Dictionary<string, object> init_network()
+        Dictionary<string, object> init_network()
         {
             //sample_weightをcsvファイルに落とした時点で若干精度が変わった。
             var dic = new Dictionary<string, object>();
-            dic["W1"] = ReadAllLines("../dataset/model/ch03/sample_weight/W1.txt").Select(x => x.Split(',').Select(y => double.Parse(y)).ToArray()).ToArray();
-            dic["W2"] = ReadAllLines("../dataset/model/ch03/sample_weight/W2.txt").Select(x => x.Split(',').Select(y => double.Parse(y)).ToArray()).ToArray();
-            dic["W3"] = ReadAllLines("../dataset/model/ch03/sample_weight/W3.txt").Select(x => x.Split(',').Select(y => double.Parse(y)).ToArray()).ToArray();
-            dic["b1"] = ReadAllLines("../dataset/model/ch03/sample_weight/b1.txt")[0].Split(',').Select(y => double.Parse(y)).ToArray();
-            dic["b2"] = ReadAllLines("../dataset/model/ch03/sample_weight/b2.txt")[0].Split(',').Select(y => double.Parse(y)).ToArray();
-            dic["b3"] = ReadAllLines("../dataset/model/ch03/sample_weight/b3.txt")[0].Split(',').Select(y => double.Parse(y)).ToArray();
+            dic["W1"] = std.ReadAllLines("../dataset/model/ch03/sample_weight/W1.txt").Select(x => x.Split(',').Select(y => double.Parse(y)).ToArray()).ToArray();
+            dic["W2"] = std.ReadAllLines("../dataset/model/ch03/sample_weight/W2.txt").Select(x => x.Split(',').Select(y => double.Parse(y)).ToArray()).ToArray();
+            dic["W3"] = std.ReadAllLines("../dataset/model/ch03/sample_weight/W3.txt").Select(x => x.Split(',').Select(y => double.Parse(y)).ToArray()).ToArray();
+            dic["b1"] = std.ReadAllLines("../dataset/model/ch03/sample_weight/b1.txt")[0].Split(',').Select(y => double.Parse(y)).ToArray();
+            dic["b2"] = std.ReadAllLines("../dataset/model/ch03/sample_weight/b2.txt")[0].Split(',').Select(y => double.Parse(y)).ToArray();
+            dic["b3"] = std.ReadAllLines("../dataset/model/ch03/sample_weight/b3.txt")[0].Split(',').Select(y => double.Parse(y)).ToArray();
             return dic;
         }
 
@@ -47,7 +49,7 @@ namespace Contents.ch03
             return y;
         }
 
-        public static void Execute()
+        public void Execute()
         {
             (var x, var t) = get_data();
             var network = init_network();
@@ -63,7 +65,7 @@ namespace Contents.ch03
                 var t_batch = t.TakeSkip(i, batch_size);
                 accuracy_cnt += p.Select((e, index) => new { actual = e, expected = t_batch[index] }).Count(e => e.actual == e.expected);
             }
-            print("Accuracy:" + (accuracy_cnt / x.Length)); // Accuracy:0.9352*/
+            std.print("Accuracy:" + (accuracy_cnt / x.Length)); // Accuracy:0.9352*/
         }
     }
 }

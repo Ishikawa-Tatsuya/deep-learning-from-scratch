@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Contents
+namespace Contents.Utility
 {
     public static class Numpy
     {

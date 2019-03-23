@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Contents
+namespace Contents.Utility
 {
-    public static class Std
+    public class Std
     {
         public interface INeed
         {
@@ -12,10 +12,16 @@ namespace Contents
             string[] ReadAllLines(string path);
         }
 
-        public static INeed Need { get; set; }
-        
-        public static void print(object text) => Need.Print(text.ToString());
-        
+        INeed need;
+
+        public Std(INeed need) => this.need = need;
+        public void print(object text) => need.Print(text.ToString());
+        public string[] ReadAllLines(string path) => need.ReadAllLines(path);
+        public string str<T>(params T[] args) => "[" + string.Join(", ", args) + "]";
+    }
+
+    public static class StdExt
+    {
         public static double[][] Add(this double[][] l, double[] r) => l.Select(e=>e.Add(r)).ToArray();
 
         public static double[] Add(this double[] l, double[] r)
@@ -29,8 +35,6 @@ namespace Contents
             return list.ToArray();
         }
 
-        public static string[] ReadAllLines(string path) => Need.ReadAllLines(path);
-
         public static double[] Mul(this double[] l, int[] r) => Mul(l, r.Select(e=>(double)e).ToArray());
 
         public static double[] Mul(this double[] l, double[] r)
@@ -43,8 +47,6 @@ namespace Contents
             }
             return list.ToArray();
         }
-
-        public static string str<T>(params T[] args) => "[" + string.Join(", ", args) + "]";
         
         public static T[] TakeSkip<T>(this T[] src, int start, int count)
         {

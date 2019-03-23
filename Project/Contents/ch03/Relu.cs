@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Contents.Utility.MatPlotLib;
+using System;
 using System.Linq;
-using np = Contents.Numpy;
-using plt = Contents.MatPlotLib.Plot;
+using np = Contents.Utility.Numpy;
 
 namespace Contents.ch03
 {
-    public static class Relu
+    public class Relu
     {
+        public Plot plt { get; set; }
+
         static double[] relu(double[] x) => x.Select(e => Math.Max(0, e)).ToArray();
 
-        public static void Execute()
+        public void Execute()
         {
             var X = np.arange(-5.0, 5.0, 0.1);
             var Y = relu(X);

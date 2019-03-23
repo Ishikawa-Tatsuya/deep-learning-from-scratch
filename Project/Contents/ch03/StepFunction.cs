@@ -1,14 +1,16 @@
-﻿using System.Linq;
-using np = Contents.Numpy;
-using plt = Contents.MatPlotLib.Plot;
+﻿using Contents.Utility.MatPlotLib;
+using System.Linq;
+using np = Contents.Utility.Numpy;
 
 namespace Contents.ch03
 {
-    public static class StepFunction
+    public class StepFunction
     {
+        public Plot plt { get; set; }
+
         static double[] step_function(double[] x) => x.Select(e => e > 0 ? (double)1 : 0).ToArray();
 
-        public static void Execute()
+        public void Execute()
         {
             var X = np.arange(-5.0, 5.0, 0.1);
             var Y = step_function(X);

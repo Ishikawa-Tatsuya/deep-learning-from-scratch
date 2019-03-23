@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Contents
+namespace Contents.Utility
 {
     public static class Functions
     {
