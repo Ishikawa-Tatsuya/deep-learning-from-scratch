@@ -19,4 +19,5 @@ http://yann.lecun.com/exdb/mnist/
 dataset/mnist以下にこんな感じで格納してください。<br>
  ![MnistFiles.png](Documents/MnistFiles.png)
  <br><br>
- WpfAppをスタートアッププロジェクトに設定して実行すると以下のような画面が出ます。ツリーの各要素をクリックすると実行されます。実行結果のグラフとログが出力されるようになっています。Ch4/gradient_2dはグラフ出力をあきらめました。
+ WpfAppをスタートアッププロジェクトに設定して実行すると以下のような画面が出ます。ツリーの各要素をクリックすると実行されます。実行結果のグラフとログが出力されるようになっています。Ch4/gradient_2dはグラフ出力をあきらめました。<br>
+ ![screen.png](Documents/screen.png)
