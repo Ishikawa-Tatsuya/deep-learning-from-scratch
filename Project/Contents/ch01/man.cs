@@ -6,23 +6,23 @@ namespace Contents.ch01
     {
         public std std { get; set; }
 
-        public class target
+        class target
         {
             std std;
 
             string name;
 
-            public target(std std, string name)
+            internal target(std std, string name)
             {
                 this.std = std;
                 this.name = name;
                 std.print("Initilized!");
             }
 
-            public void hello()
+            internal void hello()
                 => std.print("Hello " + name + "!");
 
-            public void goodbye()
+            internal void goodbye()
                 => std.print("Good-bye " + name + "!");
 
         }

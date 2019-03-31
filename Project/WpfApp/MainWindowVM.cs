@@ -56,10 +56,14 @@ namespace WpfApp
             CurrentContens.Value = node.Name + " Executing ...";
 
             //クリア
+            int i = 0;
             Log.Value = string.Empty;
             foreach (var e in Graph)
             {
                 e.Title.Value = string.Empty;
+                e.Color.Value = LineDefaultColors[i++];
+                e.LineStyle.Value = LineStyle.Solid;
+                e.MarkerType.Value = MarkerType.None;
                 e.Coordinates.Clear();
             }
             XAxisTitle.Value = string.Empty;
@@ -108,8 +112,9 @@ namespace WpfApp
             var ch4 = new ContensTreeVM { Name = "Ch4" };
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_1d), Execute = CreateContent<gradient_1d>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_2d), Execute = CreateContent<gradient_2d>().main });
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_method), Execute = CreateContent<gradient_method>().main });
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_simplenet), Execute = CreateContent<gradient_simplenet>().main });
             Contents.Add(ch4);
-
         }
 
         T CreateContent<T>()
@@ -148,13 +153,25 @@ namespace WpfApp
 
                 var target = Graph.FirstOrDefault(e => e.Coordinates.Count == 0);
                 target.Title.Value = label;
-                switch (lineStyle)
+                if (lineStyle.Contains("--"))
                 {
-                    case "--":
-                    case "k--":
-                        target.LineStyle.Value = LineStyle.Dash;
+                    target.LineStyle.Value = LineStyle.Dash;
+                }
+                var opt = lineStyle.Replace("--", string.Empty);
+                switch (opt)
+                {
+                    case "k":
+                        target.Color.Value = Colors.Black;
+                        break;
+                    case "b":
+                        target.Color.Value = Colors.Blue;
+                        break;
+                    case "o":
+                        target.LineStyle.Value = LineStyle.None;
+                        target.MarkerType.Value = MarkerType.Circle;
                         break;
                 }
+                
                 for (int i = 0; i < x.Length; i++)
                 {
                     target.Coordinates.Add(new DataPoint(x[i], y[i]));

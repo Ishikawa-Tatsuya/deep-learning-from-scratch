@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contents", "Contents\Contents.csproj", "{B8B17E9D-A355-453A-803B-B933421303B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contents", "Contents\Contents.csproj", "{B8B17E9D-A355-453A-803B-B933421303B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{7015BAB6-EC86-4230-9A1B-859EC9CB2B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{7B4EE19F-DD0A-4D77-9CC0-498417E0AD41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7015BAB6-EC86-4230-9A1B-859EC9CB2B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7015BAB6-EC86-4230-9A1B-859EC9CB2B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7015BAB6-EC86-4230-9A1B-859EC9CB2B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B4EE19F-DD0A-4D77-9CC0-498417E0AD41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4EE19F-DD0A-4D77-9CC0-498417E0AD41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4EE19F-DD0A-4D77-9CC0-498417E0AD41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4EE19F-DD0A-4D77-9CC0-498417E0AD41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

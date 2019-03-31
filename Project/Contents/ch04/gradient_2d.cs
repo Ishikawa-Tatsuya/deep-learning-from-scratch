@@ -32,7 +32,10 @@ namespace Contents.ch04
             return grad;
         }
 
-        static double[][] numerical_gradient(Func<double[], double> f, double[][] X)
+        public static double[] numerical_gradient(Func<double[], double> f, double[] X)
+            => _numerical_gradient_no_batch(f, X);
+
+        public static double[][] numerical_gradient(Func<double[], double> f, double[][] X)
         {
             var grad = np.zeros_like(X);
             for (int idx = 0; idx < X.Length; idx++)

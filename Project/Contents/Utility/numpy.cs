@@ -6,6 +6,18 @@ namespace Contents.Utility
 {
     public static class numpy
     {
+        public class Random
+        {
+            public double[][] randn(int count1, int count2)
+            {
+                var r = new System.Random();
+                return Enumerable.Range(0, count1).Select(_ => Enumerable.Range(0, count2).
+                        Select(__ => r.NextDouble()).ToArray()).ToArray();
+            }
+        }
+
+        public static Random random { get; } = new Random();
+
         public static double[] arange(double start, double last, double interval)
         {
             var list = new List<double>();
@@ -15,6 +27,12 @@ namespace Contents.Utility
             }
             return list.ToArray();
         }
+
+        public static double[] arange(int count) => Enumerable.Range(0, count).Select(e => (double)e).ToArray();
+
+        public static T[][] copy<T>(this T[][] src) => src.Select(e => e.ToArray()).ToArray();
+
+        public static T[] copy<T>(this T[] src) => src.ToArray();
 
         public static T[] zeros_like<T>(T[] x) => new T[x.Length];
 
@@ -80,6 +98,12 @@ namespace Contents.Utility
             return dst.ToArray();
         }
 
+        public static int size<T>(this T[][] target)
+        {
+            if (target.Length == 0) return 0;
+            return target.Length * target[0].Length;
+        }
+
         public static string shape<T>(this T[][] target)
         {
             if (target.Length == 0) throw new NotSupportedException();
@@ -103,9 +127,32 @@ namespace Contents.Utility
             return dst;
         }
 
-        public static int[] argmax(double[][] all, int axis) => all.Select(e => argmax(e)).ToArray();
+        public static int[] argmax(this double[][] all, int axis)
+        {
+            if (axis == 1) return all.Select(e => argmax(e)).ToArray();
 
-        public static int argmax(double[] vals)
+            if (all.Length == 0) return new int[0];
+
+            var maxs = new int[all[0].Length];
+
+            for (int j = 0; j < all[0].Length; j++)
+            {
+                int index = 0;
+                double max = double.MinValue;
+                for (int i = 0; i < all.Length; i++)
+                {
+                    if (max < all[i][j])
+                    {
+                        max = all[i][j];
+                        index = i;
+                    }
+                }
+                maxs[j] = index;
+            }
+            return maxs;
+        }
+
+        public static int argmax(this double[] vals)
         {
             int index = 0;
             double max = double.MinValue;
