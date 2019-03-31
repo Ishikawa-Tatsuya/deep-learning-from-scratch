@@ -9,11 +9,13 @@ https://github.com/Fujiwo/CSharpNeuralNetworkSample-AI-decode
 MINSTデータは再配布できるか微妙だったので各自ダウンロードしてください。<br>
 http://yann.lecun.com/exdb/mnist/
 <br>
-以下のデータをダウンロードして展開。
-train-images-idx3-ubyte.gz:  training set images (9912422 bytes) <br>
-train-labels-idx1-ubyte.gz:  training set labels (28881 bytes) <br>
-t10k-images-idx3-ubyte.gz:   test set images (1648877 bytes) <br>
-t10k-labels-idx1-ubyte.gz:   test set labels (4542 bytes)<br>
+以下のデータをダウンロードして展開。<br>
+- train-images-idx3-ubyte.gz:  training set images (9912422 bytes)
+- train-labels-idx1-ubyte.gz:  training set labels (28881 bytes)
+- t10k-images-idx3-ubyte.gz:   test set images (1648877 bytes)
+- t10k-labels-idx1-ubyte.gz:   test set labels (4542 bytes)
+<br>
+
 dataset/mnist以下にこんな感じで格納してください。<br>
  ![MnistFiles.png](Documents/MnistFiles.png)
  <br><br>
