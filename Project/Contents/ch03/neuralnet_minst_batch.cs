@@ -13,7 +13,7 @@ namespace Contents.ch03
 
         (double[][] x_test, byte[] t_test) get_data()
         {
-            (var x_train, var t_train, var x_test, var t_test) = minst.load_mnist_normalize(one_hot_label:false);
+            (var x_train, var t_train, var x_test, var t_test) = minst.load_mnist_normalize();
             return (x_test, t_test);
         }
 

@@ -14,6 +14,12 @@ namespace Contents.Utility
                 return Enumerable.Range(0, count1).Select(_ => Enumerable.Range(0, count2).
                         Select(__ => r.NextDouble()).ToArray()).ToArray();
             }
+
+            public int[] choice(int last, int count)
+            {
+                var r = new System.Random();
+                return Enumerable.Range(0, count).Select(_ => r.Next(0, last)).ToArray();
+            }
         }
 
         public static Random random { get; } = new Random();
@@ -27,6 +33,9 @@ namespace Contents.Utility
             }
             return list.ToArray();
         }
+
+        public static T[] zeros<T>(int a) => new T[a];
+        public static T[][] zeros<T>(int a1, int a2) => Enumerable.Range(0, a1).Select(_ => new T[a2]).ToArray();
 
         public static double[] arange(int count) => Enumerable.Range(0, count).Select(e => (double)e).ToArray();
 
@@ -67,6 +76,27 @@ namespace Contents.Utility
                 }
             }
             return dst;
+        }
+
+        internal static double[] sum(double[][] dy, int axis)
+        {
+            if (axis == 0)
+            {
+                var dst = new double[dy[0].Length];
+                for (int j = 0; j < dst.Length; j++)
+                {
+                    for (int i = 0; i < dy.Length; i++)
+                    {
+                        dst[j] += dy[i][j];
+                    }
+                }
+                return dst;
+            }
+            else if (axis == 1)
+            {
+                return dy.Select(e => e.Sum()).ToArray();
+            }
+            throw new NotSupportedException();
         }
 
         public static T[] array<T>(params T[] vals) => vals; 
@@ -126,6 +156,9 @@ namespace Contents.Utility
             }
             return dst;
         }
+
+        public static int[] argmax(this byte[][] all, int axis)
+            => argmax(all.Select(e1 => e1.Select(e2 => (double)e2).ToArray()).ToArray(), axis);
 
         public static int[] argmax(this double[][] all, int axis)
         {

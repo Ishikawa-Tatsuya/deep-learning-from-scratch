@@ -47,6 +47,6 @@ namespace Contents.Utility.matplotlib
 
         public void show() { }
 
-        public void legend() { }
+        public void legend(string loc="") { }
     }
 }

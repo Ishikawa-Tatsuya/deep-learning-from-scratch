@@ -114,6 +114,7 @@ namespace WpfApp
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_2d), Execute = CreateContent<gradient_2d>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_method), Execute = CreateContent<gradient_method>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_simplenet), Execute = CreateContent<gradient_simplenet>().main });
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(train_neuralnet), Execute = CreateContent<train_neuralnet>().main });
             Contents.Add(ch4);
         }
 
