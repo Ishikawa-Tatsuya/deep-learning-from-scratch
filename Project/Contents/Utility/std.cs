@@ -67,6 +67,7 @@ namespace Contents.Utility
         //0割？
         public static double[] div(this double[] l, double r) => l.calc(r, (x, y) => x / y);
         public static double[][] div(this double[][] l, double r) => l.calc(r, (x, y) => x / y);
+        public static double[][] div(this double[][] l, double[] r) => l.calc(r, (x, y) => x / y);
 
         public static Array minus(this Array l, Array r)
         {
@@ -78,6 +79,8 @@ namespace Contents.Utility
         public static double[] minus(this double[] src) => src.Select(e => -e).ToArray();
 
         public static double[][] minus(this double[][] l, double[][] r) => l.calc(r, (x, y) => x - y);
+
+        public static double[][] minus(this double[][] l, double[] r) => l.calc(r, (x, y) => x - y);
 
         public static double[] minus(this double[] l, double[] r) => l.calc(r, (x, y) => x - y);
 

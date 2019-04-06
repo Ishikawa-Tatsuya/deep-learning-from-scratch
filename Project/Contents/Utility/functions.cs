@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using np = Contents.Utility.numpy;
 
 namespace Contents.Utility
 {
@@ -10,9 +11,18 @@ namespace Contents.Utility
         public static double[] sigmoid(double[] x) => x.Select(e => 1 / (1 + Math.Exp(-e))).ToArray();
 
         public static double[][] sigmoid_grad(double[][] x)
-            => sigmoid(x).Select(e1 => e1.Select(e2 => 1.0 - e2).ToArray()).ToArray();
+        {
+            var sigmoidX = sigmoid(x);
+            return sigmoidX.Select(e1 => e1.Select(e2 => 1.0 - e2).ToArray()).ToArray().mul(sigmoidX);
+        }
 
-        public static double[][] softmax(double[][] x) => x.Select(e => softmax(e)).ToArray();
+        public static double[][] softmax(double[][] x)
+        {
+            var x2 = x.T();
+            var x3 = x2.minus(np.max(x2, axis: 0));
+            var y = np.exp(x3).div(np.sum(np.exp(x3), axis:0));
+            return y.T();
+        }
 
         public static double[] softmax(double[] x)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Contents.Utility
 {
@@ -8,19 +9,42 @@ namespace Contents.Utility
     {
         public class Random
         {
+            System.Random core = new System.Random();
+
             public double[][] randn(int count1, int count2)
             {
-                var r = new System.Random();
                 return Enumerable.Range(0, count1).Select(_ => Enumerable.Range(0, count2).
-                        Select(__ => r.NextDouble()).ToArray()).ToArray();
+                        Select(__ => core.NextDouble()).ToArray()).ToArray();
             }
 
             public int[] choice(int last, int count)
             {
-                var r = new System.Random();
-                return Enumerable.Range(0, count).Select(_ => r.Next(0, last)).ToArray();
+                return Enumerable.Range(0, count).Select(_ => core.Next(0, last)).ToArray();
             }
         }
+
+        public static double[] max(double[][] dy, int axis)
+        {
+            if (axis == 0)
+            {
+                var dst = Enumerable.Range(0, dy[0].Length).Select(_ => double.MinValue).ToArray();
+                for (int j = 0; j < dst.Length; j++)
+                {
+                    for (int i = 0; i < dy.Length; i++)
+                    {
+                        dst[j] = Math.Max(dst[j], dy[i][j]);
+                    }
+                }
+                return dst;
+            }
+            else if (axis == 1)
+            {
+                return dy.Select(e => e.Max()).ToArray();
+            }
+            throw new NotSupportedException();
+        }
+
+        public static double[][] exp(double[][] x) => x.Select(e1 => e1.Select(e2 => Math.Exp(e2)).ToArray()).ToArray();
 
         public static Random random { get; } = new Random();
 
@@ -115,17 +139,20 @@ namespace Contents.Utility
         {
             if (l.Length != r.Length || r.Length == 0) throw new NotSupportedException();
 
-            var dst = new List<double>(); 
+            var dst = new double[r[0].Length];
+            
             for (int j = 0; j < r[0].Length; j++)
-            {
+            { 
                 double sum = 0;
                 for (int i = 0; i < l.Length; i++)
                 {
-                    sum += l[i] * r[i][j];
+                    var val = l[i] * r[i][j];
+                    sum += val;
                 }
-                dst.Add(sum);
-            }
-            return dst.ToArray();
+                dst[j] = sum;
+            };
+
+            return dst;
         }
 
         public static int size<T>(this T[][] target)

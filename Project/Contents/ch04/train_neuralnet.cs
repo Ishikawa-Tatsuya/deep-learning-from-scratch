@@ -1,8 +1,6 @@
 ﻿using Contents.Utility;
 using System;
 using np = Contents.Utility.numpy;
-using static Contents.Utility.functions;
-using static Contents.Utility.gradient;
 using Contents.Utility.matplotlib;
 using System.Collections.Generic;
 

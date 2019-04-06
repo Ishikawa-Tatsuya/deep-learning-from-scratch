@@ -67,9 +67,9 @@ namespace Contents.ch04
             var y = softmax(a2);
 
             // backward
-            var dy = (double[][])y.minus(t).div(batch_num);
+            var dy = y.minus(t).div(batch_num);
             grads["W2"] = np.dot(z1.T(), dy);
-            grads["b2"] = np.sum(dy, axis:0);//縦方向への足し算ってこと
+            grads["b2"] = np.sum(dy, axis:0);
 
             var dz1 = np.dot(dy, W2.T());
             var da1 = sigmoid_grad(a1).mul(dz1);

@@ -50,7 +50,7 @@ namespace WpfApp
         {
             //選択されているアイテムを取得
             var node = GetSelectedContentsItem();
-            if (node.Execute == null) return;
+            if (node == null || node.Execute == null) return;
 
             //実行中の名前を表示
             CurrentContens.Value = node.Name + " Executing ...";
