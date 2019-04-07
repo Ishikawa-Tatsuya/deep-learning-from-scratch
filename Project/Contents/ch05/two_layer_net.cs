@@ -8,7 +8,7 @@ namespace Contents.ch05
 {
     public class TwoLayerNet
     {
-        Dictionary<string, Array> _params = new Dictionary<string, Array>();
+        public Dictionary<string, Array> _params { get; } = new Dictionary<string, Array>();
         Dictionary<string, ILayer> layers = new Dictionary<string, ILayer>();
         SoftmaxWithLoss lastLayer;
 

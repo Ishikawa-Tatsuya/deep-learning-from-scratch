@@ -39,6 +39,30 @@ namespace Contents.Utility
 
         public static double[] add(this double[] l, double[] r) => l.calc(r, (x, y) => x + y);
 
+
+        public static void assign(this Array l, Array r)
+        {
+            if (l is double[] a1) a1.assign((double[])r);
+            else if (l is double[][] a2) a2.assign((double[][])r);
+            else throw new NotSupportedException();
+        }
+
+        public static void assign(this double[][] l, double[][] r)
+        {
+            for (int i = 0; i < l.Length; i++)
+            {
+                l[i].assign(r[i]);
+            }
+        }
+
+        public static void assign(this double[] l, double[] r)
+        {
+            for (int i = 0; i < l.Length; i++)
+            {
+                l[i] = r[i];
+            }
+        }
+
         public static Array mul(this Array l, double r)
         {
             if (l is double[] a1) return a1.mul(r);

@@ -1,8 +1,6 @@
 ﻿using Contents.Utility;
-using System;
 using np = Contents.Utility.numpy;
 using Contents.Utility.matplotlib;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Contents.ch05

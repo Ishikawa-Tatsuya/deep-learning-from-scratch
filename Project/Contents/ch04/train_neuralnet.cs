@@ -41,6 +41,7 @@ namespace Contents.ch04
                 // grad = network.numerical_gradient(x_batch, t_batch);
                 var grad = network.gradient(x_batch, t_batch);
 
+                // パラメータの更新
                 foreach (var key in new[] { "W1", "b1", "W2", "b2" })
                 {
                     network._params[key] = network._params[key].minus(grad[key].mul(learning_rate));

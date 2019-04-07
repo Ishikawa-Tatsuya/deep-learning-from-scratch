@@ -115,13 +115,14 @@ namespace WpfApp
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_2d), Execute = CreateContent<gradient_2d>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_method), Execute = CreateContent<gradient_method>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_simplenet), Execute = CreateContent<gradient_simplenet>().main });
-            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(train_neuralnet), Execute = CreateContent<train_neuralnet>().main });
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(global::Contents.ch04.train_neuralnet), Execute = CreateContent<global::Contents.ch04.train_neuralnet>().main });
             Contents.Add(ch4);
 
             var ch5 = new ContensTreeVM { Name = "Ch5" };
             ch5.Nodes.Add(new ContensTreeVM { Name = nameof(buy_apple), Execute = CreateContent<buy_apple>().main });
             ch5.Nodes.Add(new ContensTreeVM { Name = nameof(buy_apple_orange), Execute = CreateContent<buy_apple_orange>().main });
             ch5.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_check), Execute = CreateContent<gradient_check>().main });
+            ch5.Nodes.Add(new ContensTreeVM { Name = nameof(global::Contents.ch05.train_neuralnet), Execute = CreateContent<global::Contents.ch05.train_neuralnet>().main });
             Contents.Add(ch5);
         }
 

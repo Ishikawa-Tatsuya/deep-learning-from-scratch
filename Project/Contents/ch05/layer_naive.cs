@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Contents.ch05
+﻿namespace Contents.ch05
 {
     public class MulLayer
     {

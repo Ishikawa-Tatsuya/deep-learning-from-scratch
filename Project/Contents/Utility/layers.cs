@@ -33,39 +33,6 @@ namespace Contents.Utility
             return dout;
         }
     }
-    
-    public class SoftmaxWithLoss
-    {
-        double[][] t;
-        double[][] y;
-        double loss;
-
-        public double forward(double[][] x, double[][] t)
-        {
-            this.t = t;
-            this.y = softmax(x);
-            this.loss = cross_entropy_error(this.y, this.t);
-            return this.loss;
-        }
-
-        public double[][] backward(double dout = 1)
-        {
-            var batch_size = this.t.shape()[0];
-            if (this.t.size() == this.y.size()) // 教師データがone-hot-vectorの場合
-            {
-                return this.y.minus(this.t).div(batch_size);
-            }
-            else
-            {
-                throw new NotImplementedException();
-                //まだ来ないので一旦未実装
-                /*
-                var dx = this.y.copy();
-                dx[np.arange(batch_size), this.t] -= 1;
-                dx = dx / batch_size;*/
-            }
-        }
-    }
 
     public class Affine : ILayer
     {
@@ -104,6 +71,39 @@ namespace Contents.Utility
             //一旦いらない
             //var dx = dx.reshape(*self.original_x_shape);  // 入力データの形状に戻す（テンソル対応）
             return dx;
+        }
+    }
+
+    public class SoftmaxWithLoss
+    {
+        double[][] t;
+        double[][] y;
+        double loss;
+
+        public double forward(double[][] x, double[][] t)
+        {
+            this.t = t;
+            this.y = softmax(x);
+            this.loss = cross_entropy_error(this.y, this.t);
+            return this.loss;
+        }
+
+        public double[][] backward(double dout = 1)
+        {
+            var batch_size = this.t.shape()[0];
+            if (this.t.size() == this.y.size()) // 教師データがone-hot-vectorの場合
+            {
+                return this.y.minus(this.t).div(batch_size);
+            }
+            else
+            {
+                throw new NotImplementedException();
+                //まだ来ないので一旦未実装
+                /*
+                var dx = this.y.copy();
+                dx[np.arange(batch_size), this.t] -= 1;
+                dx = dx / batch_size;*/
+            }
         }
     }
 }
