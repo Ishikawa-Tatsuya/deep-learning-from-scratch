@@ -9,17 +9,28 @@ namespace Contents.Utility
     {
         public class Random
         {
-            System.Random core = new System.Random();
+            System.Random coreInt = new System.Random();
+            System.Random seedBoxMuller = new System.Random();
 
             public double[][] randn(int count1, int count2)
             {
                 return Enumerable.Range(0, count1).Select(_ => Enumerable.Range(0, count2).
-                        Select(__ => core.NextDouble()).ToArray()).ToArray();
+                        Select(__ => nextBoxMuller()).ToArray()).ToArray();
             }
 
             public int[] choice(int last, int count)
             {
-                return Enumerable.Range(0, count).Select(_ => core.Next(0, last)).ToArray();
+                return Enumerable.Range(0, count).Select(_ => coreInt.Next(0, last)).ToArray();
+            }
+
+            double nextBoxMuller()
+            {
+                while (true)
+                {
+                    var rand = seedBoxMuller.NextDouble();
+                    if (rand == 0) continue;
+                    return Math.Sqrt(-2.0 * Math.Log(rand)) * Math.Cos(2.0 * Math.PI * seedBoxMuller.NextDouble());
+                }
             }
         }
 
@@ -123,6 +134,28 @@ namespace Contents.Utility
             throw new NotSupportedException();
         }
 
+        public static double average(Array array)
+        {
+            if (array is double[] a1) return average(a1);
+            if (array is double[][] a2) return average(a2);
+            throw new NotSupportedException();
+        }
+
+        public static double average(double[][] array) => array.Select(e => average(e)).Average();
+
+        public static double average(double[] array) => array.Average();
+
+        public static Array abs(Array array)
+        {
+            if (array is double[] a1) return abs(a1);
+            if (array is double[][] a2) return abs(a2);
+            throw new NotSupportedException();
+        }
+
+        public static double[][] abs(double[][] array) => array.Select(e => abs(e)).ToArray();
+
+        public static double[] abs(double[] array) => array.Select(e => Math.Abs(e)).ToArray();
+
         public static T[] array<T>(params T[] vals) => vals; 
 
         public static double[] cos(double[] src) => src.Select(e => Math.Cos(e)).ToArray();
@@ -169,10 +202,10 @@ namespace Contents.Utility
             return target.Length * target[0].Length;
         }
 
-        public static string shape<T>(this T[][] target)
+        public static int[] shape<T>(this T[][] target)
         {
             if (target.Length == 0) throw new NotSupportedException();
-            return "(" + target.Length + "," + target[0].Length + ")";
+            return new [] { target.Length, target[0].Length };
         }
 
         public static T[][] reshape<T>(this T[] src, int rowCount, int colCount)
