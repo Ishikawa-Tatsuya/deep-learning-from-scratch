@@ -133,7 +133,15 @@ namespace Contents.Utility
 
         public static double[] dot(byte[] l, double[][] r) => dot(l.Select(e => (double)e).ToArray(), r);
 
-        public static double[][] dot(double[][] l, double[][] r) => l.Select(e => dot(e, r)).ToArray();
+        public static double[][] dot(double[][] l, double[][] r)
+        {
+            var dst = new double[l.Length][];
+            Parallel.For(0, l.Length, i =>
+            {
+                dst[i] = dot(l[i], r);
+            });
+            return dst;
+        }
 
         public static double[] dot(double[] l, double[][] r)
         {
@@ -144,9 +152,9 @@ namespace Contents.Utility
             for (int j = 0; j < r[0].Length; j++)
             { 
                 double sum = 0;
-                for (int i = 0; i < l.Length; i++)
+                for (int k = 0; k < l.Length; k++)
                 {
-                    var val = l[i] * r[i][j];
+                    var val = l[k] * r[k][j];
                     sum += val;
                 }
                 dst[j] = sum;
