@@ -38,7 +38,18 @@ namespace Contents.ch03
             var b1 = (double[])network["b1"];
             var b2 = (double[])network["b2"];
             var b3 = (double[])network["b3"];
-            
+
+            //x が画像でピクセル数が28*28=784
+            //一段目のノードが784個
+            //二段目のノードが50個
+            //三段目は100個
+            //出力は10個
+
+            //W1は784×50
+            //W2は50×100
+            //W3は100×10
+            //の配列になっている
+
             var a1 = np.dot(x, W1).add(b1);
             var z1 = sigmoid(a1);
             var a2 = np.dot(z1, W2).add(b2);

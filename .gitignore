@@ -331,3 +331,5 @@ ASALocalRun/
 
 *.idx3-ubyte
 *.idx1-ubyte
+
+Project/dataset/mnist
