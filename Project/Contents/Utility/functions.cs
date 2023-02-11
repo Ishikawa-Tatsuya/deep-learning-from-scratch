@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using np = Contents.Utility.numpy;
 
@@ -18,10 +20,10 @@ namespace Contents.Utility
 
         public static double[][] softmax(double[][] x)
         {
-            var x2 = x.T();
+            var x2 = x.縦横回転();
             var x3 = x2.minus(np.max(x2, axis: 0));
             var y = np.exp(x3).div(np.sum(np.exp(x3), axis:0));
-            return y.T();
+            return y.縦横回転();
         }
 
         public static double[] softmax(double[] x)
@@ -33,33 +35,72 @@ namespace Contents.Utility
             return exp.Select(e => e / expSum).ToArray();
         }
 
-        public static double 交差エントロピー誤差(double[] ySrc, double[] tSrc)
-            => 交差エントロピー誤差(ySrc.reshape(1, ySrc.Length), tSrc.reshape(1, tSrc.Length));
 
-        public static double 交差エントロピー誤差(double[][] y, byte[][] t)
-            => 交差エントロピー誤差(y, t.Select(e1 => e1.Select(e2 => (double)e2).ToArray()).ToArray());
 
-        public static double 交差エントロピー誤差(double[][] 結果, double[][] 正解)
+
+        public static double 二乗和誤差(double[] 結果, double[] 正解)
         {
-            if (正解.size() != 結果.size()) throw new NotImplementedException();
+            if (正解.Length != 結果.Length) throw new NotImplementedException();
+            double 合計 = 0;
+            for (int j = 0; j < 結果.Length; j++)
+            {
+                var 正解確率 = 正解[j];
+                var 計算確率 = 結果[j];
+                合計 += Math.Pow(計算確率 - 正解確率, 2);
+            }
+            return 合計 / 2;
+        }
 
-            // 教師データがone-hot-vectorの場合、正解ラベルのインデックスに変換
-            var 正解の数字= 正解.argmax(axis: 1);
+        public static double 交差エントロピー誤差_1(double[] 結果, double[] 正解)
+        {
+            if (正解.Length != 結果.Length) throw new NotImplementedException();
 
             double 合計 = 0;
-            for (int i = 0; i < 結果.Length; i++)
+            for (int j = 0; j < 結果.Length; j++)
             {
-                var secondIndex = 正解の数字[i];
+                var 正解確率 = 正解[j];
+                var 計算確率 = 結果[j];
 
-                var 正解に対する確率 = 結果[i][secondIndex];
-
-                var val = 正解に対する確率 + 1e-7;
-                合計 += Math.Log(val);//自然対数  底 2.718281828459
+                //1e-7はLog(0)を防ぐため
+                合計 += Math.Log(計算確率 + 1e-7) * 正解確率;
             }
+            double 誤差 = -合計;
 
-            //平均
-            var テストデータの数 = 結果.Length;
-            return -合計 / テストデータの数;
+            return 誤差;
         }
+
+        public static double 交差エントロピー誤差_2(double[] 結果, double[] 正解)
+        {
+            if (正解.Length != 結果.Length) throw new NotImplementedException();
+
+            // 教師データがone-hot-vectorの場合、正解ラベルのインデックスに変換
+            var 正解の数字のインデックス = 正解.ToList().IndexOf(1);
+
+            var 正解に対する確率 = 結果[正解の数字のインデックス];
+
+            return -Math.Log(正解に対する確率 + 1e-7);//自然対数  底 2.718281828459
+        }
+
+        public static double 交差エントロピー誤差_バッチ対応(double[][] 結果, double[][] 正解)
+        {
+            //平均をとっている
+            double 全体の合計 = 0;
+            for (int i = 0; i < 正解.Length; i++)
+            {
+                全体の合計 += 交差エントロピー誤差_2(結果[i], 正解[i]);
+            }
+            var テストデータの数 = 結果.Length;
+            return 全体の合計 / テストデータの数;
+        }
+
+
+
+
+        public static double 交差エントロピー誤差(double[] ySrc, double[] tSrc)
+            => 交差エントロピー誤差_バッチ対応(ySrc.reshape(1, ySrc.Length), tSrc.reshape(1, tSrc.Length));
+
+        public static double 交差エントロピー誤差(double[][] y, byte[][] t)
+            => 交差エントロピー誤差_バッチ対応(y, t.Select(e1 => e1.Select(e2 => (double)e2).ToArray()).ToArray());
+
     }
 }

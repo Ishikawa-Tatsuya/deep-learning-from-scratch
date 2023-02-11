@@ -64,8 +64,8 @@ namespace Contents.Utility
 
         public double[][] backward(double[][] dout)
         {
-            var dx = np.dot(dout, this.W.T());
-            this.dW = np.dot(this.x.T(), dout);
+            var dx = np.dot(dout, this.W.縦横回転());
+            this.dW = np.dot(this.x.縦横回転(), dout);
             this.db = np.sum(dout, axis:0);
 
             //一旦いらない
@@ -84,7 +84,7 @@ namespace Contents.Utility
         {
             this.t = t;
             this.y = softmax(x);
-            this.loss = 交差エントロピー誤差(this.y, this.t);
+            this.loss = 交差エントロピー誤差_バッチ対応(this.y, this.t);
             return this.loss;
         }
 

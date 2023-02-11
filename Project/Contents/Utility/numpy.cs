@@ -99,7 +99,7 @@ namespace Contents.Utility
             return list.ToArray();
         }
 
-        public static TT[][] T<TT>(this TT[][] src)
+        public static TT[][] 縦横回転<TT>(this TT[][] src)
         {
             var dst = new TT[src[0].Length][];
             for (int i = 0; i < dst.Length; i++)

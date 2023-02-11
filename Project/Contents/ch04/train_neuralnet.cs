@@ -47,16 +47,16 @@ namespace Contents.ch04
                     network._params[key] = network._params[key].minus(grad[key].mul(learning_rate));
                 }
 
-                var loss = network.loss(x_batch, t_batch);
-                train_loss_list.Add(loss);
-
                 if (i % iter_per_epoch == 0)
                 {
                     var train_acc = network.accuracy(x_train, t_train);
                     var test_acc = network.accuracy(x_test, t_test);
+                    var loss = network.loss(x_batch, t_batch);
+
                     train_acc_list.Add(train_acc);
                     test_acc_list.Add(test_acc);
-                    std.print("train acc, test acc | " + std.str(train_acc) + ", " + std.str(test_acc));
+                    train_loss_list.Add(loss);
+                    std.print("train acc, test acc, loss | " + std.str(train_acc) + ", " + std.str(test_acc) + ", " + std.str(loss));
                 }
             }
 

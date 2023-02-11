@@ -57,7 +57,7 @@ namespace Contents.ch04
             var X = XSrc.flatten();
             var Y = YSrc.flatten();
 
-            var grad = numerical_gradient(function_2, np.array(X, Y).T()).T();
+            var grad = numerical_gradient(function_2, np.array(X, Y).縦横回転()).縦横回転();
 
             plt.figure();
             plt.quiver(X, Y, grad[0].minus(), grad[1].minus(), angles: "xy", color: "#666666");
