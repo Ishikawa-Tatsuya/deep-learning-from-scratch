@@ -21,7 +21,7 @@ namespace Contents.ch04
             {
                 var z = predict(x);
                 var y = softmax(z);
-                var loss = cross_entropy_error(y, t);
+                var loss = 交差エントロピー誤差(y, t);
                 return loss;
             }
         }

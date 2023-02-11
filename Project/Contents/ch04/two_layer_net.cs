@@ -37,7 +37,7 @@ namespace Contents.ch04
         public double loss(double[][] x, double[][] t)
         {
             var y = predict(x);
-            return cross_entropy_error(y, t);
+            return 交差エントロピー誤差(y, t);
         }
 
         public double accuracy(double[][] x, double[][] t)

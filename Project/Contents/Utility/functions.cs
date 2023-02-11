@@ -33,34 +33,33 @@ namespace Contents.Utility
             return exp.Select(e => e / expSum).ToArray();
         }
 
-        public static double cross_entropy_error(double[] ySrc, double[] tSrc)
-            => cross_entropy_error(ySrc.reshape(1, ySrc.Length), tSrc.reshape(1, tSrc.Length));
+        public static double 交差エントロピー誤差(double[] ySrc, double[] tSrc)
+            => 交差エントロピー誤差(ySrc.reshape(1, ySrc.Length), tSrc.reshape(1, tSrc.Length));
 
-        public static double cross_entropy_error(double[][] y, byte[][] t)
-            => cross_entropy_error(y, t.Select(e1 => e1.Select(e2 => (double)e2).ToArray()).ToArray());
+        public static double 交差エントロピー誤差(double[][] y, byte[][] t)
+            => 交差エントロピー誤差(y, t.Select(e1 => e1.Select(e2 => (double)e2).ToArray()).ToArray());
 
-        public static double cross_entropy_error(double[][] y, double[][] t)
+        public static double 交差エントロピー誤差(double[][] 結果, double[][] 正解)
         {
+            if (正解.size() != 結果.size()) throw new NotImplementedException();
+
             // 教師データがone-hot-vectorの場合、正解ラベルのインデックスに変換
-            if (t.size() == y.size())
-            {
-                var t2 = t.argmax(axis: 1);
+            var 正解の数字= 正解.argmax(axis: 1);
 
-                var batch_size = y.Length;
-
-                double sum = 0;
-                for (int i = 0; i < y.Length; i++)
-                {
-                    var secondIndex = t2[i];
-                    var val = y[i][secondIndex] + 1e-7;
-                    sum += Math.Log(val);
-                }
-                return -sum / batch_size;
-            }
-            else
+            double 合計 = 0;
+            for (int i = 0; i < 結果.Length; i++)
             {
-                throw new NotImplementedException();
+                var secondIndex = 正解の数字[i];
+
+                var 正解に対する確率 = 結果[i][secondIndex];
+
+                var val = 正解に対する確率 + 1e-7;
+                合計 += Math.Log(val);//自然対数  底 2.718281828459
             }
+
+            //平均
+            var テストデータの数 = 結果.Length;
+            return -合計 / テストデータの数;
         }
     }
 }

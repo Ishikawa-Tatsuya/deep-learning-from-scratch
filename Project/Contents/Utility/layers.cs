@@ -84,7 +84,7 @@ namespace Contents.Utility
         {
             this.t = t;
             this.y = softmax(x);
-            this.loss = cross_entropy_error(this.y, this.t);
+            this.loss = 交差エントロピー誤差(this.y, this.t);
             return this.loss;
         }
 
