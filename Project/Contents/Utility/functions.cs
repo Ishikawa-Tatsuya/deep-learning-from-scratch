@@ -93,14 +93,36 @@ namespace Contents.Utility
             return 全体の合計 / テストデータの数;
         }
 
-
-
-
         public static double 交差エントロピー誤差(double[] ySrc, double[] tSrc)
             => 交差エントロピー誤差_バッチ対応(ySrc.reshape(1, ySrc.Length), tSrc.reshape(1, tSrc.Length));
 
         public static double 交差エントロピー誤差(double[][] y, byte[][] t)
             => 交差エントロピー誤差_バッチ対応(y, t.Select(e1 => e1.Select(e2 => (double)e2).ToArray()).ToArray());
+
+
+        public static double 微分_改良(Func<double, double> f, double x)
+        {
+            double h = 0.0001;//10e-4;
+            return (f(x + h) - f(x - h)) / (2 * h);
+        }
+
+        public static double 微分_素直(Func<double, double> f, double x)
+        {
+            double h = 10e-50;
+            return (f(x + h) - f(x)) / h;
+        }
+
+        /*
+        public static double 微分_X(Func<double, double> f, double x)
+        {
+            double h = 1;
+
+            var a = f(x + h);
+            var b = f(x);
+
+            return (a - b) / h;
+        }
+        */
 
     }
 }

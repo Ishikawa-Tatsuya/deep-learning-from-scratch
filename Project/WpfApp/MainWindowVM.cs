@@ -111,6 +111,8 @@ namespace WpfApp
             Contents.Add(ch3);
 
             var ch4 = new ContensTreeVM { Name = "Ch4" };
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(微分), Execute = CreateContent<微分>().main });
+            ch4.Nodes.Add(new ContensTreeVM { Name = nameof(微分_関数チェック), Execute = CreateContent<微分_関数チェック>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_1d), Execute = CreateContent<gradient_1d>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_2d), Execute = CreateContent<gradient_2d>().main });
             ch4.Nodes.Add(new ContensTreeVM { Name = nameof(gradient_method), Execute = CreateContent<gradient_method>().main });
